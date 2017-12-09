@@ -8,4 +8,6 @@
     <color name="colorMainLight">#494949</color>
     <color name="colorButtonReset">#A1771C</color>
     <color name="colorTransparentBlack">#DD000000</color>
+
+    <color name="colorDivider">#707070</color>
 </resources>

@@ -5,6 +5,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,9 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.hackday10th.yay.hackday.R;
 import jp.hackday10th.yay.hackday.WeightCalculator;
+import jp.hackday10th.yay.hackday.adapters.WeightMemoAdapter;
 import jp.hackday10th.yay.hackday.databinding.FragmentScaleBinding;
+import jp.hackday10th.yay.hackday.models.MemoItem;
 import jp.hackday10th.yay.hackday.views.TouchHandleView;
 
 public class ScaleFragment extends Fragment {
@@ -22,6 +30,8 @@ public class ScaleFragment extends Fragment {
     private static final String TYPE_FACE_PATH = "fonts/DINNextLTPro-Regular.otf";
     private FragmentScaleBinding mBinding;
     private WeightCalculator mWeightCalculator = new WeightCalculator();
+    private WeightMemoAdapter mWeightMemoAdapter;
+    private List<MemoItem> mMemoItems = new ArrayList<>();
 
     @Nullable
     @Override
@@ -29,6 +39,13 @@ public class ScaleFragment extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_scale, null, false);
         Typeface type = Typeface.createFromAsset(getContext().getAssets(), TYPE_FACE_PATH);
         setTypeFaceToTexts(type);
+        mWeightMemoAdapter = new WeightMemoAdapter(mMemoItems, type);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mBinding.memoList.setLayoutManager(layoutManager);
+        mBinding.memoList.setAdapter(mWeightMemoAdapter);
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
+        decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider));
+        mBinding.memoList.addItemDecoration(decoration);
         return mBinding.getRoot();
     }
 
@@ -39,6 +56,18 @@ public class ScaleFragment extends Fragment {
             @Override
             public boolean handleTouchEvent(MotionEvent event) {
                 return ScaleFragment.this.handleTouchEvent(event);
+            }
+        });
+        mBinding.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveMemo(mBinding.weight.getText().toString());
+            }
+        });
+        mBinding.resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMemo();
             }
         });
         clearWeight();
@@ -88,6 +117,17 @@ public class ScaleFragment extends Fragment {
         return true;
     }
 
+    private void saveMemo(String weight) {
+        insertItemToList(new MemoItem(weight));
+    }
+
+    private void clearMemo() {
+        List<MemoItem> items = new ArrayList<>(mMemoItems);
+        for (MemoItem item : items) {
+            removeItemFromList(item);
+        }
+    }
+
     private void displayWeight(float[] footPrints) {
         float weightInGrams = mWeightCalculator.computeWeight(footPrints);
         displayWeight(weightInGrams);
@@ -101,5 +141,41 @@ public class ScaleFragment extends Fragment {
     private void clearWeight() {
         displayWeight(0.0f);
         mBinding.area.setText("");
+    }
+
+    private void insertItemToList(MemoItem item) {
+        if (mMemoItems == null) {
+            return;
+        }
+        int index = mMemoItems.indexOf(item);
+        if (-1 != index) {
+            return;
+        }
+        mMemoItems.add(0, item);
+        mWeightMemoAdapter.notifyItemInserted(0);
+    }
+
+    private void updateListItem(MemoItem item) {
+        if (mMemoItems == null) {
+            return;
+        }
+        int index = mMemoItems.indexOf(item);
+        if (-1 != index) {
+            mWeightMemoAdapter.notifyItemChanged(index, item);
+        }
+    }
+
+    private void removeItemFromList(MemoItem item) {
+        if (mMemoItems == null) {
+            return;
+        }
+        int index = mMemoItems.indexOf(item);
+        if (-1 == index) {
+            return;
+        }
+        boolean isDelete = mMemoItems.remove(item);
+        if (isDelete) {
+            mWeightMemoAdapter.notifyItemRemoved(index);
+        }
     }
 }

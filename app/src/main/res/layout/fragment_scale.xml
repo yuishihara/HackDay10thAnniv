@@ -27,21 +27,34 @@
         <RelativeLayout
             android:layout_width="@dimen/right_bar_width"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" >
+            android:layout_alignParentEnd="true">
 
             <TextView
                 android:id="@+id/weight"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/weight_height"
                 android:layout_alignParentTop="true"
                 android:background="@color/colorMainDark"
                 android:gravity="end"
+                android:paddingBottom="@dimen/weight_padding_bottom"
                 android:paddingEnd="@dimen/weight_padding_end"
                 android:paddingStart="@dimen/weight_padding_end"
                 android:paddingTop="@dimen/weight_padding_top"
                 android:text="@string/weight_text"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_size_large" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/memo_list"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/memo_size"
+                android:layout_below="@id/weight"
+                android:background="@color/colorMainLight"
+                android:paddingEnd="@dimen/memo_padding_end"
+                android:paddingStart="@dimen/memo_padding_start"
+                android:paddingTop="@dimen/memo_padding_top"
+                android:paddingBottom="@dimen/memo_padding_bottom"
+                android:scrollbars="vertical" />
 
             <LinearLayout
                 android:layout_width="match_parent"
