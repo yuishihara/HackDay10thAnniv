@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import jp.hackday10th.yay.hackday.databinding.FragmentScaleBinding;
 import jp.hackday10th.yay.hackday.views.TouchHandleView;
 
 public class ScaleFragment extends Fragment {
+    private static final String TAG = ScaleFragment.class.getSimpleName();
     private FragmentScaleBinding mBinding;
 
     @Nullable
@@ -55,6 +57,7 @@ public class ScaleFragment extends Fragment {
         }
         String sizeInfo = builder.toString();
         mBinding.area.setText(sizeInfo);
+        Log.i(TAG, sizeInfo);
         return true;
     }
 }
