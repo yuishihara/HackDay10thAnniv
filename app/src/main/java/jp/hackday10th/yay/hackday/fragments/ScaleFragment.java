@@ -41,7 +41,7 @@ public class ScaleFragment extends Fragment {
                 return ScaleFragment.this.handleTouchEvent(event);
             }
         });
-        displayWeight(0.0f);
+        clearWeight();
     }
 
     @Override
@@ -62,6 +62,10 @@ public class ScaleFragment extends Fragment {
     }
 
     private boolean handleTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            clearWeight();
+            return true;
+        }
         StringBuilder builder = new StringBuilder();
         float[] footPrints = new float[event.getPointerCount()];
         for (int i = 0; i < event.getPointerCount(); ++i) {
@@ -92,5 +96,10 @@ public class ScaleFragment extends Fragment {
     private void displayWeight(float weightInGrams) {
         String weightText = getContext().getResources().getString(R.string.weight_text, weightInGrams);
         mBinding.weight.setText(weightText);
+    }
+
+    private void clearWeight() {
+        displayWeight(0.0f);
+        mBinding.area.setText("");
     }
 }
