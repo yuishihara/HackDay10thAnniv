@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Smart Scale</string>
+    <string name="app_name">Weight Memo</string>
     <string name="default_text">Size will be displayed here</string>
     <string name="weight_text">%1$.0fg</string>
     <string name="save_text">save</string>
