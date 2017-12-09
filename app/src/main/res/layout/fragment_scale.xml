@@ -5,11 +5,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ui_guide" />
 
         <jp.hackday10th.yay.hackday.views.TouchHandleView
             android:id="@+id/scale_area"
@@ -20,16 +21,58 @@
             android:id="@+id/area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_normal"
-            android:text="@string/default_text" />
+            android:text="@string/default_text"
+            android:textSize="@dimen/font_size_normal" />
 
-        <TextView
-            android:id="@+id/weight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/font_size_large"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:text="@string/weight_text" />
+        <RelativeLayout
+            android:layout_width="@dimen/right_bar_width"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true" >
+
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorMainDark"
+                android:gravity="end"
+                android:paddingEnd="@dimen/weight_padding_end"
+                android:paddingStart="@dimen/weight_padding_end"
+                android:paddingTop="@dimen/weight_padding_top"
+                android:text="@string/weight_text"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font_size_large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorMainLight"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reset_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="242"
+                    android:background="@color/colorButtonReset"
+                    android:gravity="center"
+                    android:text="@string/reset_text"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_size_normal" />
+
+                <TextView
+                    android:id="@+id/save_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="345"
+                    android:background="@color/colorMainLight"
+                    android:gravity="center"
+                    android:text="@string/save_text"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_size_normal" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </RelativeLayout>
 </layout>

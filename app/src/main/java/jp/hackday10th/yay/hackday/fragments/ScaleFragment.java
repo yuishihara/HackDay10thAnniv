@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import jp.hackday10th.yay.hackday.R;
 import jp.hackday10th.yay.hackday.WeightCalculator;
@@ -27,7 +28,7 @@ public class ScaleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_scale, null, false);
         Typeface type = Typeface.createFromAsset(getContext().getAssets(), TYPE_FACE_PATH);
-        mBinding.weight.setTypeface(type);
+        setTypeFaceToTexts(type);
         return mBinding.getRoot();
     }
 
@@ -47,6 +48,17 @@ public class ScaleFragment extends Fragment {
     public void onPause() {
         mBinding.scaleArea.removeTouchHandleListener();
         super.onPause();
+    }
+
+    private void setTypeFaceToTexts(Typeface typeface) {
+        TextView[] texts = {
+                mBinding.weight,
+                mBinding.saveButton,
+                mBinding.resetButton
+        };
+        for (TextView text : texts) {
+            text.setTypeface(typeface);
+        }
     }
 
     private boolean handleTouchEvent(MotionEvent event) {
