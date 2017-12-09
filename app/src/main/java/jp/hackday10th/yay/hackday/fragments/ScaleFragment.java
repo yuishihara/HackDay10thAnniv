@@ -113,7 +113,7 @@ public class ScaleFragment extends Fragment {
         displayWeight(footPrints);
         String sizeInfo = builder.toString();
         mBinding.area.setText(sizeInfo);
-        Log.i(TAG, sizeInfo);
+//        Log.i(TAG, sizeInfo);
         return true;
     }
 
