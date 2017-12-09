@@ -22,5 +22,14 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_size_normal"
             android:text="@string/default_text" />
+
+        <TextView
+            android:id="@+id/weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_size_large"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/weight_text" />
     </RelativeLayout>
 </layout>

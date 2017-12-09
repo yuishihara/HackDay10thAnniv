@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jp.hackday10th.yay.hackday.R;
+import jp.hackday10th.yay.hackday.WeightCalculator;
 import jp.hackday10th.yay.hackday.databinding.FragmentScaleBinding;
 import jp.hackday10th.yay.hackday.views.TouchHandleView;
 
 public class ScaleFragment extends Fragment {
     private static final String TAG = ScaleFragment.class.getSimpleName();
     private FragmentScaleBinding mBinding;
+    private WeightCalculator mWeightCalculator = new WeightCalculator();
 
     @Nullable
     @Override
@@ -34,6 +36,7 @@ public class ScaleFragment extends Fragment {
                 return ScaleFragment.this.handleTouchEvent(event);
             }
         });
+        displayWeight(0.0f);
     }
 
     @Override
@@ -44,20 +47,34 @@ public class ScaleFragment extends Fragment {
 
     private boolean handleTouchEvent(MotionEvent event) {
         StringBuilder builder = new StringBuilder();
+        float[] footPrints = new float[event.getPointerCount()];
         for (int i = 0; i < event.getPointerCount(); ++i) {
             try {
                 int id = event.getPointerId(i);
                 float size = event.getPressure(id);
+                footPrints[i] = size;
                 builder.append("Pointer: ").append(i)
                         .append(" TouchEvent size: ").append(size)
                         .append("\n");
             } catch (IllegalArgumentException noSuchIndex) {
+                footPrints[i] = -1.0f;
                 // Do nothing
             }
         }
+        displayWeight(footPrints);
         String sizeInfo = builder.toString();
         mBinding.area.setText(sizeInfo);
         Log.i(TAG, sizeInfo);
         return true;
+    }
+
+    private void displayWeight(float[] footPrints) {
+        float weightInGrams = mWeightCalculator.computeWeight(footPrints);
+        displayWeight(weightInGrams);
+    }
+
+    private void displayWeight(float weightInGrams) {
+        String weightText = getContext().getResources().getString(R.string.weight_text, weightInGrams);
+        mBinding.weight.setText(weightText);
     }
 }
