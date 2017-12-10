@@ -3,6 +3,7 @@ package jp.hackday10th.yay.hackday.fragments;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,7 @@ public class ScaleFragment extends Fragment {
     private WeightCalculator mWeightCalculator = new WeightCalculator();
     private WeightMemoAdapter mWeightMemoAdapter;
     private List<MemoItem> mMemoItems = new ArrayList<>();
+    private Handler mHandler;
 
     @Nullable
     @Override
@@ -46,6 +48,7 @@ public class ScaleFragment extends Fragment {
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), layoutManager.getOrientation());
         decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider));
         mBinding.memoList.addItemDecoration(decoration);
+        mHandler = new Handler(getContext().getMainLooper());
         return mBinding.getRoot();
     }
 
@@ -71,12 +74,36 @@ public class ScaleFragment extends Fragment {
             }
         });
         clearWeight();
+        startCounting();
     }
 
     @Override
     public void onPause() {
+        stopCounting();
         mBinding.scaleArea.removeTouchHandleListener();
         super.onPause();
+    }
+
+    private void startCounting() {
+        mBinding.fps.setText("0");
+        countNext();
+    }
+
+    private void countNext() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long current = Long.parseLong(mBinding.fps.getText().toString());
+                long next = (current + 1) % 30;
+                mBinding.fps.setText(String.valueOf(next));
+                Log.i(TAG, "Current count: " + current);
+                countNext();
+            }
+        }, (long) (1000.0f / 30.0f));
+    }
+
+    private void stopCounting() {
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     private void setTypeFaceToTexts(Typeface typeface) {
